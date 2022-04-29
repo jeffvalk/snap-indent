@@ -78,15 +78,6 @@ If no additional formatting is desired, this should be nil."
   (when (memq this-command '(yank yank-pop))
     (snap-indent-indent (region-beginning) (region-end))))
 
-(defun snap-indent-enabled-buffers ()
-  "Return the list of buffers for which `snap-indent-mode' is enabled."
-  (remove nil
-          (mapcar (lambda (buf)
-                    (with-current-buffer buf
-                      (when snap-indent-mode
-                        buf)))
-                  (buffer-list))))
-
 ;;;###Autoload
 (define-minor-mode snap-indent-mode
   "Toggle snap-indent mode on or off.
