@@ -45,6 +45,11 @@ from `prog-mode', for example."
   :type '(repeat symbol)
   :group 'snap-indent)
 
+(defcustom snap-indent-on-save nil
+  "Whether to indent the entire buffer on save."
+  :type 'boolean
+  :group 'snap-indent)
+
 (defcustom snap-indent-format nil
   "Additional formatting function to apply when indenting.
 Commonly, this may be `tabify' or `untabify'. The function must accept two
@@ -54,13 +59,8 @@ If no additional formatting is desired, this should be nil."
   :options '(nil tabify untabify)
   :group 'snap-indent)
 
-(defcustom snap-indent-on-save nil
-  "Whether to indent the entire buffer on save."
-  :type 'boolean
-  :group 'snap-indent)
-
 (defun snap-indent-indent (beg end)
-  "Indent the text between BEG and END."
+  "Indent and optionally format the text between BEG and END."
   (let ((transient-mark-mode nil)
         (orig-max (point-max)))
     (indent-region beg end)
