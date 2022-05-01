@@ -6,6 +6,7 @@
 ;; URL: https://github.com/jeffvalk/snap-indent
 ;; Keywords: indent tools convenience
 ;; Version: 1.0-snapshot
+;; Package-Requires: ((emacs "27.1"))
 
 ;; This file is NOT part of GNU Emacs.
 
@@ -51,12 +52,14 @@ from `prog-mode', for example."
   :group 'snap-indent)
 
 (defcustom snap-indent-format nil
-  "Additional formatting function to apply when indenting.
-Commonly, this may be `tabify' or `untabify'. The function must accept two
-arguments which indicate the start and end positions for the region to format.
-If no additional formatting is desired, this should be nil."
-  :type 'function
-  :options '(nil tabify untabify)
+  "Additional formatting function(s) to apply when indenting.
+This may be a single function, a list of functions, or nil. The function(s) must
+accept two arguments, which specify the start and end positions of the region on
+which to operate. Useful built-in functions include `tabify' and `untabify' for
+tab/space conversion and `delete-trailing-whitespace'."
+  :type '(choice
+          (function :tag "Single function")
+          (repeat :tag "List of functions" function))
   :group 'snap-indent)
 
 (defun snap-indent-indent (beg end)
@@ -64,9 +67,9 @@ If no additional formatting is desired, this should be nil."
   (let ((transient-mark-mode nil)
         (orig-max (point-max)))
     (indent-region beg end)
-    (when snap-indent-format
-      (let ((end* (+ end (- (point-max) orig-max)))) ; change from indent
-        (funcall snap-indent-format beg end*)))))
+    (dolist (format (flatten-list snap-indent-format)) ; may be atom or list
+      (let ((end* (+ end (- (point-max) orig-max)))) ; account for prior changes
+        (funcall format beg end*)))))
 
 (defun snap-indent-save-handler ()
   "Indent buffer text on save as specified."
