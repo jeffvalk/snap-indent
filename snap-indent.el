@@ -6,7 +6,6 @@
 ;; URL: https://github.com/jeffvalk/snap-indent
 ;; Keywords: indent tools convenience
 ;; Version: 1.0-snapshot
-;; Package-Requires: ((emacs "27.1"))
 
 ;; This file is NOT part of GNU Emacs.
 
@@ -62,12 +61,25 @@ tab/space conversion and `delete-trailing-whitespace'."
           (repeat :tag "List of functions" function))
   :group 'snap-indent)
 
+;; To make user configuration more expressive and less error-prone,
+;; `snap-indent-format' may be either a function or a list of functions; if the
+;; former, we'll wrap it in a list. Caveat when checking for this: lambdas are
+;; both functions and lists. (The lambda form is self-quoting; evaluating it
+;; returns the form itself.) Hence, to distinguish what should be wrapped, we
+;; must test the value's function-ness not just its list-ness.
+
+(defun snap-indent-as-list (function-or-list)
+  "Return FUNCTION-OR-LIST as a list, treating lambda forms as atoms."
+  (if (or (not (listp function-or-list)) (functionp function-or-list))
+      (list function-or-list)
+    function-or-list))
+
 (defun snap-indent-indent (beg end)
   "Indent and optionally format the text between BEG and END."
   (let ((transient-mark-mode nil)
         (orig-max (point-max)))
     (indent-region beg end)
-    (dolist (format (flatten-list snap-indent-format)) ; may be atom or list
+    (dolist (format (snap-indent-as-list snap-indent-format))
       (let ((end* (+ end (- (point-max) orig-max)))) ; account for prior changes
         (funcall format beg end*)))))
 
