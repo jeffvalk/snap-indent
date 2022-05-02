@@ -46,6 +46,62 @@
     (should (cl-every #'functionp (snap-indent-as-list list1)))
     (should (cl-every #'functionp (snap-indent-as-list list2)))))
 
+(ert-deftest snap-indent-indent-test ()
+  "Test indentation and formatting."
+  ;; The tests below rely on equivalence of indentation behavior between elisp
+  ;; major mode formatting and pretty printing. If these ever break suddenly,
+  ;; check this assumption.
+  (let* ((inhibit-message t) ; run tests quietly
+         (forms '(lorem ipsum dolor
+                        (sit amet consectetur (adipiscing elit))
+                        (sed () do eiusmod
+                             (tempor incididunt) (ut (labore (et (dolore ())))))
+                        (magna aliqua ut)
+                        (((enim)) ad (minim) veniam)
+                        (quis nostrud exercitation ullamco laboris nisi)))
+         (pp-text (pp-to-string forms))
+         (unindented-text (replace-regexp-in-string "^ *" "" pp-text))
+         (trailing-ws-text (replace-regexp-in-string "\n" "    \n" unindented-text)))
+    ;; Indentation only, no formatting
+    (with-temp-buffer
+      (emacs-lisp-mode)
+      (snap-indent-mode)
+      (let ((snap-indent-format nil))
+        (insert unindented-text)
+        (snap-indent-indent (point-min) (point-max))
+        (should (string-equal (buffer-string) pp-text))))
+    ;; Indentation with one formatting function
+    (with-temp-buffer
+      (emacs-lisp-mode)
+      (snap-indent-mode)
+      (let ((snap-indent-format 'delete-trailing-whitespace))
+        (insert trailing-ws-text)
+        (snap-indent-indent (point-min) (point-max))
+        (should (string-equal (buffer-string) pp-text))))
+    ;; Indentation with multiple formatting functions
+    (with-temp-buffer
+      (emacs-lisp-mode)
+      (snap-indent-mode)
+      (let ((snap-indent-format '(delete-trailing-whitespace upcase-region)))
+        (insert trailing-ws-text)
+        (snap-indent-indent (point-min) (point-max))
+        (should (string-equal (buffer-string) (upcase pp-text)))))
+    ;; Ensure effects are confined to region
+    (with-temp-buffer
+      (emacs-lisp-mode)
+      (snap-indent-mode)
+      (let* ((snap-indent-format nil)
+             (beg (length unindented-text))
+             (end (* beg 2)))
+        (insert unindented-text
+                unindented-text
+                unindented-text)
+        (snap-indent-indent beg end) ; format only second text region
+        (should (string-equal (buffer-string)
+                              (concat unindented-text
+                                      pp-text
+                                      unindented-text)))))))
+
 (provide 'snap-indent-tests)
 
 ;;; snap-indent-tests.el ends here
