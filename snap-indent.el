@@ -38,7 +38,7 @@
   :prefix "snap-indent-"
   :group 'indent)
 
-(defcustom snap-indent-excluded-modes nil
+(defcustom snap-indent-excluded-modes '(python-mode)
   "Modes in which `snap-indent-mode' should not be activated.
 This permits activation for `prog-mode' while excluding certain modes derived
 from `prog-mode', for example."
