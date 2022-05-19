@@ -24,12 +24,17 @@
 
 ;;; Commentary:
 
-;; Snap-indent provides a simple automatic indentation minor mode for Emacs.
+;; Snap-indent provides simple automatic indentation for Emacs as a minor mode.
 ;; It enables the following features:
 ;;
-;;  - On yank/paste, indent inserted text according to major mode
-;;  - On save, indent buffer text according to major mode (optional)
-;;  - When indenting, further format text, e.g. tabify, untabify (optional)
+;; - On yank/paste, indent inserted text according to major mode
+;; - On save, indent buffer text according to major mode (optional)
+;; - When indenting, further format text, e.g. tabify, untabify (optional)
+;; - Prevent minor mode activation in certain major modes (optional)
+;;
+;; Snap-indent's additional formatting behavior is very flexible. Any function
+;; that operates on a region may be used, and multiple functions may be
+;; specified.
 
 ;;; Code:
 
