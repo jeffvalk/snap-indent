@@ -1,4 +1,4 @@
-;;; snap-indent-tests.el --- Snap-indent tests
+;;; snap-indent-tests.el --- Snap-indent tests -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2022 Jeff Valk
 

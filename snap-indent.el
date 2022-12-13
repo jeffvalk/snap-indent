@@ -1,11 +1,12 @@
-;;; snap-indent.el --- Simple automatic indentation
+;;; snap-indent.el --- Simple automatic indentation -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2022 Jeff Valk
 
 ;; Author: Jeff Valk <jv@jeffvalk.com>
 ;; URL: https://github.com/jeffvalk/snap-indent
 ;; Keywords: indent tools convenience
-;; Version: 1.0-snapshot
+;; Version: 1.0
+;; Package-Requires: ((emacs "24.1"))
 
 ;; This file is NOT part of GNU Emacs.
 
