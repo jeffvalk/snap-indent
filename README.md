@@ -1,5 +1,6 @@
 # Snap-indent
 
+[![Build Status](https://github.com/jeffvalk/snap-indent/actions/workflows/test.yml/badge.svg?branch=master)](https://github.com/jeffvalk/snap-indent/actions)
 [![License GPL 3](https://img.shields.io/badge/license-GPL_3-green.svg)](http://www.gnu.org/licenses/gpl-3.0.txt)
 
 ## Synopsis
