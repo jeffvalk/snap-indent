@@ -5,11 +5,13 @@
 
 ## Synopsis
 
-Snap-indent provides simple automatic indentation for Emacs as a minor mode. It enables the following features:
+Snap-indent provides simple automatic indentation (and optional formatting) when yanking/pasting text.
 
-- On yank/paste, indent inserted text according to major mode
-- On save, indent buffer text according to major mode (optional)
-- When indenting, further format text, e.g. tabify, untabify (optional)
+`snap-indent-mode` is an Emacs minor mode that enables the following features:
+
+- Indent inserted text according to major mode on yank/paste
+- Indent buffer text according to major mode on save (optional)
+- When indenting, additionally format text, e.g. tabify, untabify, remove trailing whitespace, etc (optional)
 - Prevent minor mode activation in certain major modes (optional)
 
 Snap-indent's additional formatting behavior is very flexible. Any function that operates on a region may be used, and multiple functions may be specified.
@@ -20,9 +22,9 @@ Snap-indent's additional formatting behavior is very flexible. Any function that
 
 ### Replacement for auto-indent-mode
 
-Snap-indent was created as a minimalist replacement for `auto-indent-mode`. That package is shockingly complex, and while I respect the ambition of its author, complexity has costs. At the time snap-indent was created, `auto-indent-mode` had numerous interoperability bugs with other common packages. Its approach hadn't aged well.
+Snap-indent was created as a minimalist replacement for `auto-indent-mode`. That package is surprisingly complex, and while I respect the ambition of its author, complexity has costs. At the time snap-indent was created, `auto-indent-mode` had numerous interoperability bugs with other common packages. Its approach hadn't aged well.
 
-In contrast, snap-indent, while quite flexible, is designed for simplicity and hygiene. It doesn't replace built-in functionality or use function advice. It's lightweight and should play well with other packages. And it has regression tests.
+In contrast, snap-indent, while quite flexible, is designed for simplicity and hygiene. It doesn't overwrite built-in functionality or use function advice. It's lightweight and should play well with other packages. And it has unit tests.
 
 ## Installation
 
@@ -63,7 +65,7 @@ Snap-indent can optionally apply additional formatting when indenting. This is h
 (setq snap-indent-format '(untabify delete-trailing-whitespace ...)) ; list of functions
 ```
 
-Each function must accept two arguments, which specify the start and end positions of the region on which to operate. Functions may be specified as symbols or lambda forms.
+Each function must accept two arguments: the beginning and end positions of the region on which to operate. Functions may be specified as symbols or lambda forms.
 
 ## License
 
