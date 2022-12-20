@@ -50,11 +50,11 @@ To configure via `use-package`, adapt the following example as desired:
 
 ### Options
 
-| Option                       | Type             | Default          | Description                                   |
-|:-----------------------------|:-----------------|:-----------------|:----------------------------------------------|
-| `snap-indent-excluded-modes` | symbol list      | `'(python-mode)` | Major modes in which to ignore activation     |
-| `snap-indent-format`         | function or list | `nil`            | Additional formatting to apply when indenting |
-| `snap-indent-on-save`        | boolean          | `nil`            | Whether to indent the entire buffer on save   |
+| Option                       | Type             | Default                                                                                       | Description                                   |
+|:-----------------------------|:-----------------|:----------------------------------------------------------------------------------------------|:----------------------------------------------|
+| `snap-indent-excluded-modes` | symbol list      | `'(elm-mode haskell-mode makefile-gmake-mode makefile-mode occam-mode python-mode yaml-mode)` | Major modes in which to ignore activation     |
+| `snap-indent-format`         | function or list | `nil`                                                                                         | Additional formatting to apply when indenting |
+| `snap-indent-on-save`        | boolean          | `nil`                                                                                         | Whether to indent the entire buffer on save   |
 
 ### Custom formatting
 

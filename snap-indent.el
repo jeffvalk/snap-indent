@@ -48,7 +48,13 @@
   :prefix "snap-indent-"
   :group 'indent)
 
-(defcustom snap-indent-excluded-modes '(python-mode)
+(defcustom snap-indent-excluded-modes '(elm-mode
+                                        haskell-mode
+                                        makefile-gmake-mode
+                                        makefile-mode
+                                        occam-mode
+                                        python-mode
+                                        yaml-mode)
   "Modes in which `snap-indent-mode' should not be activated.
 This permits activation for `prog-mode' while excluding certain modes derived
 from `prog-mode', for example."
