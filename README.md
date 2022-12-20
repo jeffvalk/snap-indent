@@ -1,6 +1,7 @@
 # Snap-indent
 
 [![Build Status](https://github.com/jeffvalk/snap-indent/actions/workflows/test.yml/badge.svg?branch=master)](https://github.com/jeffvalk/snap-indent/actions)
+[![MELPA](https://melpa.org/packages/snap-indent-badge.svg)](https://melpa.org/#/snap-indent)
 [![License GPL 3](https://img.shields.io/badge/license-GPL_3-green.svg)](http://www.gnu.org/licenses/gpl-3.0.txt)
 
 ## Synopsis
@@ -30,7 +31,7 @@ In contrast, snap-indent, while quite flexible, is designed for simplicity and h
 
 ## Installation
 
-Currently, snap-indent is not uploaded to any package repository. Loading the package from source is required.
+Snap-indent is available from [MELPA](https://melpa.org/). 
 
 ## Usage
 
@@ -44,7 +45,6 @@ To configure via `use-package`, adapt the following example as desired:
 
 ```elisp
 (use-package snap-indent
-  :load-path "site-lisp/"
   :hook (prog-mode . snap-indent-mode)
   :custom ((snap-indent-format 'untabify)
            (snap-indent-on-save t)))
