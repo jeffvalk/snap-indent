@@ -50,15 +50,15 @@ To configure via `use-package`, adapt the following example as desired:
            (snap-indent-on-save t)))
 ```
 
-### Options
+### Customization
 
-| Option                       | Type             | Default                                                                                       | Description                                   |
+| Variable                       | Type             | Default                                                                                       | Description                                   |
 |:-----------------------------|:-----------------|:----------------------------------------------------------------------------------------------|:----------------------------------------------|
 | `snap-indent-excluded-modes` | symbol list      | `'(elm-mode haskell-mode makefile-gmake-mode makefile-mode occam-mode python-mode yaml-mode)` | Major modes in which to ignore activation     |
 | `snap-indent-format`         | function or list | `nil`                                                                                         | Additional formatting to apply when indenting |
 | `snap-indent-on-save`        | boolean          | `nil`                                                                                         | Whether to indent the entire buffer on save   |
 
-### Custom formatting
+### Additional formatting
 
 Snap-indent can optionally apply additional formatting when indenting. This is highly customizable and controlled by the variable `snap-indent-format`. When non-nil, this variable may be either a single function or a list of functions to apply sequentially:
 
