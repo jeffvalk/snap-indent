@@ -52,11 +52,11 @@ To configure via `use-package`, adapt the following example as desired:
 
 ### Customization
 
-| Variable                       | Type             | Default                                                                                       | Description                                   |
-|:-----------------------------|:-----------------|:----------------------------------------------------------------------------------------------|:----------------------------------------------|
-| `snap-indent-excluded-modes` | symbol list      | `'(elm-mode haskell-mode makefile-gmake-mode makefile-mode occam-mode python-mode yaml-mode)` | Major modes in which to ignore activation     |
-| `snap-indent-format`         | function or list | `nil`                                                                                         | Additional formatting to apply when indenting |
-| `snap-indent-on-save`        | boolean          | `nil`                                                                                         | Whether to indent the entire buffer on save   |
+| Variable                     | Type             | Default                                                                                                                                                                                                                                                                | Description                                   |
+| :--------------------------- | :--------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :-------------------------------------------- |
+| `snap-indent-excluded-modes` | symbol list      | `(cmake-ts-mode coffee-mode conf-mode elm-mode haml-mode haskell-mode makefile-automake-mode makefile-bsdmake-mode makefile-gmake-mode makefile-imake-mode makefile-makepp-mode makefile-mode occam-mode python-mode python-ts-mode slim-mode yaml-mode yaml-ts-mode)` | Major modes in which to ignore activation     |
+| `snap-indent-format`         | function or list | `nil`                                                                                                                                                                                                                                                                  | Additional formatting to apply when indenting |
+| `snap-indent-on-save`        | boolean          | `nil`                                                                                                                                                                                                                                                                  | Whether to indent the entire buffer on save   |
 
 ### Additional formatting
 
