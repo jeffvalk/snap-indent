@@ -96,6 +96,15 @@ tab/space conversion and `delete-trailing-whitespace'."
 ;; returns the form itself.) Hence, to distinguish what should be wrapped, we
 ;; must test the value's function-ness not just its list-ness.
 
+(defcustom snap-indent-yank-threshold nil
+  "Do not indent yanked text if its length exceeds the threshold.
+
+This can help prevent performance issues when yanking large
+blocks of text.
+
+When nil, no threshold is applied."
+  :type 'number)
+
 (defun snap-indent-as-list (function-or-list)
   "Return FUNCTION-OR-LIST as a list, treating lambda forms as atoms."
   (if (or (not (listp function-or-list)) (functionp function-or-list))
@@ -117,9 +126,16 @@ tab/space conversion and `delete-trailing-whitespace'."
     (snap-indent-indent (point-min) (point-max))))
 
 (defun snap-indent-command-handler ()
-  "Indent region text on yank."
+  "Indent region text on yank.
+
+When `snap-indent-yank-threshold' is not nil, do not trigger
+snap-indent if the region length exceeds the threshold."
   (when (memq this-command '(yank yank-pop))
-    (snap-indent-indent (region-beginning) (region-end))))
+    (let ((beg (region-beginning))
+          (end (region-end)))
+      (when (or (not snap-indent-yank-threshold)
+                (<= (- end beg) snap-indent-yank-threshold))
+        (snap-indent-indent beg end)))))
 
 ;;;###Autoload
 (define-minor-mode snap-indent-mode
