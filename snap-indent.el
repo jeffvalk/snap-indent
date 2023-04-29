@@ -105,6 +105,13 @@ blocks of text.
 When nil, no threshold is applied."
   :type 'number)
 
+(defcustom snap-indent-yank-skip-indent-with-prefix-arg nil
+  "Do not indent yanked text if yank was invoked with a prefix arg.
+
+This can be useful as it lets you skip indent for a single yank
+operation without disabling `snap-indent-mode'."
+  :type 'boolean)
+
 (defun snap-indent-as-list (function-or-list)
   "Return FUNCTION-OR-LIST as a list, treating lambda forms as atoms."
   (if (or (not (listp function-or-list)) (functionp function-or-list))
@@ -130,7 +137,9 @@ When nil, no threshold is applied."
 
 When `snap-indent-yank-threshold' is not nil, do not trigger
 snap-indent if the region length exceeds the threshold."
-  (when (memq this-command '(yank yank-pop))
+  (when (and (memq this-command '(yank yank-pop))
+             (or (not snap-indent-yank-skip-indent-with-prefix-arg)
+                 (not current-prefix-arg)))
     (let ((beg (region-beginning))
           (end (region-end)))
       (when (or (not snap-indent-yank-threshold)
