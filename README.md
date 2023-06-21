@@ -38,7 +38,7 @@ Snap-indent is available from [MELPA](https://melpa.org/).
 Execute `M-x snap-indent-mode` to enable in any buffer, or add a hook to enable for a specific mode:
 
 ```elisp
-(add-hook prog-mode-hook #'snap-indent-mode)
+(add-hook 'prog-mode-hook #'snap-indent-mode)
 ```
 
 To configure via `use-package`, adapt the following example as desired:
