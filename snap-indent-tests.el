@@ -1,6 +1,6 @@
 ;;; snap-indent-tests.el --- Snap-indent tests -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2022 Jeff Valk
+;; Copyright (C) 2023 Jeff Valk
 
 ;; Author: Jeff Valk <jv@jeffvalk.com>
 
@@ -101,6 +101,57 @@
                               (concat unindented-text
                                       pp-text
                                       unindented-text)))))))
+
+(ert-deftest snap-indent-maybe-indent-test ()
+  "Test conditional indentation."
+  ;; The tests below rely on equivalence of indentation behavior between elisp
+  ;; major mode formatting and pretty printing. If these ever break suddenly,
+  ;; check this assumption.
+  (let* ((inhibit-message t) ; run tests quietly
+         (forms '(lorem ipsum dolor
+                        (sit amet consectetur (adipiscing elit))
+                        (sed () do eiusmod
+                             (tempor incididunt) (ut (labore (et (dolore ())))))
+                        (magna aliqua ut)
+                        (((enim)) ad (minim) veniam)
+                        (quis nostrud exercitation ullamco laboris nisi)))
+         (pp-text (pp-to-string forms))
+         (unindented-text (replace-regexp-in-string "^ *" "" pp-text)))
+    ;; Skip when exceeding length limit
+    (with-temp-buffer
+      (emacs-lisp-mode)
+      (snap-indent-mode)
+      (insert unindented-text)
+      (let ((snap-indent-length-limit 10))    ; over limit
+        (snap-indent-maybe-indent (point-min) (point-max))
+        (should (string-equal (buffer-string) unindented-text)))
+      (let ((snap-indent-length-limit 10000)) ; under limit
+        (snap-indent-maybe-indent (point-min) (point-max))
+        (should (string-equal (buffer-string) pp-text))))
+    ;; Skip when prefix arg is specified
+    (with-temp-buffer
+      (emacs-lisp-mode)
+      (snap-indent-mode)
+      (insert unindented-text)
+      (let ((snap-indent-skip-on-prefix-arg t)
+            (current-prefix-arg '(4))) ; prefixed
+        (snap-indent-maybe-indent (point-min) (point-max))
+        (should (string-equal (buffer-string) unindented-text)))
+      (let ((snap-indent-skip-on-prefix-arg t)
+            (current-prefix-arg nil))  ; not prefixed
+        (snap-indent-maybe-indent (point-min) (point-max))
+        (should (string-equal (buffer-string) pp-text))))
+    ;; Skip according to user-defined predicate
+    (with-temp-buffer
+      (emacs-lisp-mode)
+      (snap-indent-mode)
+      (insert unindented-text)
+      (let ((snap-indent-skip-on-condition (lambda (_ _) t)))    ; pred: t
+        (snap-indent-maybe-indent (point-min) (point-max))
+        (should (string-equal (buffer-string) unindented-text)))
+      (let ((snap-indent-skip-on-condition (lambda (_ _) nil)))  ; pred: nil
+        (snap-indent-maybe-indent (point-min) (point-max))
+        (should (string-equal (buffer-string) pp-text))))))
 
 (provide 'snap-indent-tests)
 

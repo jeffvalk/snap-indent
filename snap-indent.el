@@ -1,11 +1,11 @@
 ;;; snap-indent.el --- Simple automatic indentation -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2022 Jeff Valk
+;; Copyright (C) 2023 Jeff Valk
 
 ;; Author: Jeff Valk <jv@jeffvalk.com>
 ;; URL: https://github.com/jeffvalk/snap-indent
 ;; Keywords: indent tools convenience
-;; Version: 1.0
+;; Version: 1.1
 ;; Package-Requires: ((emacs "24.1"))
 
 ;; This file is NOT part of GNU Emacs.
@@ -89,28 +89,37 @@ tab/space conversion and `delete-trailing-whitespace'."
           (repeat :tag "List of functions" function))
   :group 'snap-indent)
 
+(defcustom snap-indent-length-limit nil
+  "Maximum text length to indent.
+Set this to prevent any performance issues with large blocks of text.
+When nil, no limit is applied."
+  :type 'integer
+  :group 'snap-indent)
+
+(defcustom snap-indent-skip-on-prefix-arg nil
+  "Whether a prefix command argument causes indentation to be skipped.
+When non-nil, this lets you skip indentation for a single operation without
+disabling `snap-indent-mode'."
+  :type 'boolean
+  :group 'snap-indent)
+
+(defcustom snap-indent-skip-on-condition nil
+  "Predicate function to cause indentation to be skipped.
+When specified, this lets you skip indentation for a single operation without
+disabling `snap-indent-mode' according to any logic you choose.
+
+The function must accept two arguments, which specify the start and end
+positions of the region on which to (potentially) operate. The function should
+return non-nil to skip indentation, and nil otherwise."
+  :type 'function
+  :group 'snap-indent)
+
 ;; To make user configuration more expressive and less error-prone,
 ;; `snap-indent-format' may be either a function or a list of functions; if the
 ;; former, we'll wrap it in a list. Caveat when checking for this: lambdas are
 ;; both functions and lists. (The lambda form is self-quoting; evaluating it
 ;; returns the form itself.) Hence, to distinguish what should be wrapped, we
 ;; must test the value's function-ness not just its list-ness.
-
-(defcustom snap-indent-yank-threshold nil
-  "Do not indent yanked text if its length exceeds the threshold.
-
-This can help prevent performance issues when yanking large
-blocks of text.
-
-When nil, no threshold is applied."
-  :type 'number)
-
-(defcustom snap-indent-yank-skip-indent-with-prefix-arg nil
-  "Do not indent yanked text if yank was invoked with a prefix arg.
-
-This can be useful as it lets you skip indent for a single yank
-operation without disabling `snap-indent-mode'."
-  :type 'boolean)
 
 (defun snap-indent-as-list (function-or-list)
   "Return FUNCTION-OR-LIST as a list, treating lambda forms as atoms."
@@ -127,24 +136,25 @@ operation without disabling `snap-indent-mode'."
       (let ((end* (+ end (- (point-max) orig-max)))) ; account for prior changes
         (funcall format beg end*)))))
 
+(defun snap-indent-maybe-indent (beg end)
+  "If the region between BEG and END should be indented, dispatch that action."
+  (unless (or (and snap-indent-length-limit
+                   (> (- end beg) snap-indent-length-limit))
+              (and snap-indent-skip-on-prefix-arg
+                   current-prefix-arg)
+              (and snap-indent-skip-on-condition
+                   (funcall snap-indent-skip-on-condition beg end)))
+    (snap-indent-indent beg end)))
+
 (defun snap-indent-save-handler ()
   "Indent buffer text on save as specified."
   (when snap-indent-on-save
-    (snap-indent-indent (point-min) (point-max))))
+    (snap-indent-maybe-indent (point-min) (point-max))))
 
 (defun snap-indent-command-handler ()
-  "Indent region text on yank.
-
-When `snap-indent-yank-threshold' is not nil, do not trigger
-snap-indent if the region length exceeds the threshold."
-  (when (and (memq this-command '(yank yank-pop))
-             (or (not snap-indent-yank-skip-indent-with-prefix-arg)
-                 (not current-prefix-arg)))
-    (let ((beg (region-beginning))
-          (end (region-end)))
-      (when (or (not snap-indent-yank-threshold)
-                (<= (- end beg) snap-indent-yank-threshold))
-        (snap-indent-indent beg end)))))
+  "Indent region text on yank."
+  (when (memq this-command '(yank yank-pop))
+    (snap-indent-maybe-indent (region-beginning) (region-end))))
 
 ;;;###Autoload
 (define-minor-mode snap-indent-mode
