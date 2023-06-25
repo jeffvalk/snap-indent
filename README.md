@@ -52,11 +52,14 @@ To configure via `use-package`, adapt the following example as desired:
 
 ### Customization
 
-| Variable                     | Type             | Default                                                                                                                                                                                                                                                                | Description                                   |
-| :--------------------------- | :--------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :-------------------------------------------- |
-| `snap-indent-excluded-modes` | symbol list      | `(cmake-ts-mode coffee-mode conf-mode elm-mode haml-mode haskell-mode makefile-automake-mode makefile-bsdmake-mode makefile-gmake-mode makefile-imake-mode makefile-makepp-mode makefile-mode occam-mode python-mode python-ts-mode slim-mode yaml-mode yaml-ts-mode)` | Major modes in which to ignore activation     |
-| `snap-indent-format`         | function or list | `nil`                                                                                                                                                                                                                                                                  | Additional formatting to apply when indenting |
-| `snap-indent-on-save`        | boolean          | `nil`                                                                                                                                                                                                                                                                  | Whether to indent the entire buffer on save   |
+| Variable                         | Type             | Default                                                                                                                                                                                                                                                                | Description                                                        |
+|:---------------------------------|:-----------------|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:-------------------------------------------------------------------|
+| `snap-indent-excluded-modes`     | symbol list      | `(cmake-ts-mode coffee-mode conf-mode elm-mode haml-mode haskell-mode makefile-automake-mode makefile-bsdmake-mode makefile-gmake-mode makefile-imake-mode makefile-makepp-mode makefile-mode occam-mode python-mode python-ts-mode slim-mode yaml-mode yaml-ts-mode)` | Major modes in which to ignore activation                          |
+| `snap-indent-format`             | function or list | `nil`                                                                                                                                                                                                                                                                  | Additional formatting to apply when indenting                      |
+| `snap-indent-on-save`            | boolean          | `nil`                                                                                                                                                                                                                                                                  | Whether to indent the entire buffer on save                        |
+| `snap-indent-length-limit`       | integer          | `nil`                                                                                                                                                                                                                                                                  | Maximum text length to indent                                      |
+| `snap-indent-skip-on-prefix-arg` | boolean          | `nil`                                                                                                                                                                                                                                                                  | Whether a prefix command argument causes indentation to be skipped |
+| `snap-indent-skip-on-condition`  | function         | `nil`                                                                                                                                                                                                                                                                  | Predicate function to cause indentation to be skipped              |
 
 ### Additional formatting
 
@@ -71,6 +74,6 @@ Each function must accept two arguments: the beginning and end positions of the 
 
 ## License
 
-Copyright © 2022 Jeff Valk
+Copyright © 2023 Jeff Valk
 
 Distributed under the GNU General Public License, version 3
