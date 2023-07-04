@@ -67,7 +67,7 @@ The following customization variables are available:
 | `snap-indent-skip-on-prefix-arg` | boolean          | `nil`             | Whether a prefix argument causes indentation to be skipped |
 | `snap-indent-skip-on-condition`  | function         | `nil`             | Predicate function to cause indentation to be skipped      |
 
-[modes]: snap-indent.el#L60-L77
+[modes]: snap-indent.el#L59-L76
 
 ### Additional formatting
 
