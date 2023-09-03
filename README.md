@@ -27,11 +27,11 @@ Snap-indent can be configured to skip indentation with equal flexibility. Any pr
 
 `electric-indent-mode` indents while typing. Snap-indent indents on yank/paste and optionally on save. These do not overlap, and work well together.
 
-### Replacement for auto-indent-mode
+### Successor to auto-indent-mode
 
-Snap-indent was created as a minimalist replacement for `auto-indent-mode`. That package is surprisingly complex, and while I respect the ambition of its author, complexity has costs. At the time snap-indent was created, `auto-indent-mode` had numerous interoperability bugs with other common packages. Its approach hadn't aged well.
+Snap-indent was originally created as a minimalist replacement for `auto-indent-mode`. That package was widely used and appreciated, but also quite complex, which led to interoperability bugs with other common packages. In contrast, snap-indent, while quite flexible, is designed for simplicity and hygiene. It's lightweight and should play well with other packages.
 
-In contrast, snap-indent, while quite flexible, is designed for simplicity and hygiene. It doesn't overwrite built-in functionality or use function advice. It's lightweight and should play well with other packages. And it has unit tests.
+As of 2023-06-23, `auto-indent-mode` was retired by its author, who [recommended](https://github.com/mattfidler/auto-indent-mode.el/commit/2dab3cb2229687b16c8a3aca3f8063df2275b8ea) snap-indent as a successor.
 
 ## Installation
 
